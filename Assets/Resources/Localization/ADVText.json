@@ -1,0 +1,28 @@
+{
+  "survivor_MasterAdvCharacterNameForClient": {
+    "idx": [
+      1,
+      2,
+      3
+    ],
+    "name": [
+      "张三",
+      "李华",
+      "王五"
+    ]
+  },
+  "survivor_MasterAdvForClient": {
+    "idx": [
+      1,
+      2
+    ],
+    "title": [
+      "第一章：你好吗",
+      "第二章：你叫什么"
+    ],
+    "summary": [
+      "相互问好",
+      "介绍自己"
+    ]
+  }
+}

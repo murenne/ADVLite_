@@ -1,0 +1,52 @@
+{
+  "survivor_MasterAdvCharacterNameForClient": {
+    "idx": [
+      1,
+      2,
+      3
+    ],
+    "name": [
+      "Zhang San",
+      "Li Hua",
+      "Wang Wu"
+    ]
+  },
+  "survivor_MasterAdvForClient": {
+    "idx": [
+      1,
+      2
+    ],
+    "title": [
+      "Chapter 1: Hello",
+      "Chapter 2: What's your name?"
+    ],
+    "summary": [
+      "Greeting each other",
+      "Introducing oneself"
+    ]
+  },
+  "survivor_MasterAdvScenarioForClient": {
+    "1": {
+      "idx": [
+        1000001,
+        1000002,
+        1000003
+      ],
+      "text": [
+        "Hello, how are you now?",
+        "I'm fine, thank you. And you?",
+        "I'm fine too. Thanks."
+      ]
+    },
+    "2": {
+      "idx": [
+        2000001,
+        2000002
+      ],
+      "text": [
+        "What's your name?",
+        "My name is Li Hua."
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+    "name": "UnityADV",
+    "rootNamespace": "UnityADV",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "GUID:58c7b7d7fb7558e488711a440ca0dcf4",
+        "GUID:9e24947de15b9834991c9d8411ea37cf",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:593a5b492d29ac6448b1ebf7f035ef33",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e",
+        "GUID:5c01796d064528144a599661eaab93a6",
+        "GUID:b9e1f1ff5b2178a4bb96139c865da555",
+        "GUID:173464ddf4cdb6640a4dfa8a9281ad69",
+        "GUID:68765d262e2128e4ab49c983f3411946"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

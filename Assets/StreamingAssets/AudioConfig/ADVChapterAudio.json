@@ -1,0 +1,35 @@
+{
+    "chapters": [
+        {
+            "chapterName": "Chapter01",
+            "audioData": {
+                "bgm": [
+                    "BGM/bgm_chapter01.mp3"
+                ],
+                "voice": [
+                    "Voice/voice_1000001.mp3",
+                    "Voice/voice_1000002.mp3",
+                    "Voice/voice_1000003.mp3"
+                ],
+                "sound": [
+                    "SE/se_car.mp3"
+                ]
+            }
+        },
+        {
+            "chapterName": "Chapter02",
+            "audioData": {
+                "bgm": [
+                    "BGM/bgm_chapter02.mp3"
+                ],
+                "voice": [
+                    "Voice/voice_2000001.mp3",
+                    "Voice/voice_2000002.mp3"
+                ],
+                "sound": [
+                    "SE/se_door_open.mp3"
+                ]
+            }
+        }
+    ]
+}
