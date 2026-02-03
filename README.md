@@ -5,24 +5,37 @@
 This is a text adventure game (ADV/AVG) framework based on **Unity 2022.3.36f1** and **XLua**  
 Features logic-view separation architecture with multi-language localization support and high extensibility
 
+## Tech Stack
+
+| Category | Technology | Version | Description |
+| :--- | :--- | :--- | :--- |
+| **Game Engine** | Unity | 2022.3.36f1 | Core game development engine |
+| **Scripting** | XLua | Latest | High-performance Lua scripting integration |
+| **Animation** | Spine | Runtime 3.x | 2D skeletal animation runtime |
+| **Tweening** | DOTween | 1.2.790 | Tween animation library |
+| **Async Framework** | UniTask | 2.5.10 | Efficient async/await integration for Unity |
+| **Data** | Newtonsoft.Json | 3.2.2 | JSON serialization and deserialization |
+| **Assets** | Addressables | 1.x | Asset management and loading system |
+| **Graphics/UI** | TextMeshPro | Built-in | Advanced text rendering and typography |
+
+---
+
 <!--ts-->
 * [ADVLite](#advlite)
+    * [Tech Stack](#tech-stack)
     * [Getting Started](#getting-started)
     * [Control](#control)
     * [Architecture](#architecture)
         * [Lua Script Engine](#lua-script-engine)
         * [Logic and View Separation](#logic-and-view-separation)
         * [Addressables Resource Management](#addressables-resource-management)
-    * [Core System](#core-system)
+    * [Core Systems](#core-systems)
         * [ADV Management System](#adv-management-system)
         * [Localization System](#localization-system)
         * [Character System](#character-system)
         * [Audio System](#audio-system)
         * [UI System](#ui-system)
         * [Resource Management System](#resource-management-system)
-    * [Technological Stack](#technological-stack)
-    * [Directory Structure](#directory-structure)
-    * [Development Instructions](#development-instructions)
     * [Statement](#statement)
 <!--te-->
 
@@ -192,19 +205,6 @@ Async resource management based on Addressables:
 - **Lifecycle Management**: Auto tracking and resource release
 - **Type Support**: Sprite, AudioClip, GameObject, TextAsset, etc.
 - **Preload Mechanism**: Scene resource preloading support
-
-## Tech Stack
-
-| Technology | Version | Description |
-|------|------|------|
-| Unity | 2022.3.36f1 | Game Engine |
-| XLua | Latest | Lua Script Engine |
-| Spine | Runtime 3.x | 2D Skeletal Animation |
-| DOTween | 1.2.790 | Animation Tweening Library |
-| UniTask | 2.5.10 | Async Task Framework |
-| Newtonsoft.Json | 3.2.2 | JSON Parsing |
-| Addressables | 1.x | Resource Management System |
-| TextMeshPro | Built-in | High-Quality Text Rendering |
 
 ## Statement
 

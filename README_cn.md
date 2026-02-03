@@ -5,24 +5,37 @@
 这是一个基于 **Unity 2022.3.36f1** 和 **XLua** 开发的文字冒险游戏（ADV/AVG）框架  
 采用逻辑与视图分离的架构设计，支持多语言本地化和高扩展性
 
+## Tech Stack
+
+| 类别 | 技术 | 版本 | 描述 |
+| :--- | :--- | :--- | :--- |
+| **游戏引擎** | Unity | 2022.3.36f1 | 核心游戏开发引擎 |
+| **脚本引擎** | XLua | 最新版 | 高性能 Lua 脚本集成框架 |
+| **动画系统** | Spine | Runtime 3.x | 2D 骨骼动画运行时 |
+| **动画辅助** | DOTween | 1.2.790 | 补间动画插件库 |
+| **异步框架** | UniTask | 2.5.10 | 为 Unity 定制的异步任务处理框架 |
+| **数据处理** | Newtonsoft.Json | 3.2.2 | JSON 序列化与反序列化工具 |
+| **资源管理** | Addressables | 1.x | 资源管理、加载与打包系统 |
+| **文本渲染** | TextMeshPro | 内置 | 高质量矢量文本渲染系统 |
+
+---
+
 <!--ts-->
 * [ADVLite](#advlite)
+    * [Tech Stack](#tech-stack)
     * [Getting Started](#getting-started)
     * [Control](#control)
     * [Architecture](#architecture)
         * [Lua Script Engine](#lua-script-engine)
         * [Logic and View Separation](#logic-and-view-separation)
         * [Addressables Resource Management](#addressables-resource-management)
-    * [Core System](#core-system)
+    * [Core Systems](#core-systems)
         * [ADV Management System](#adv-management-system)
         * [Localization System](#localization-system)
         * [Character System](#character-system)
         * [Audio System](#audio-system)
         * [UI System](#ui-system)
         * [Resource Management System](#resource-management-system)
-    * [Technological Stack](#technological-stack)
-    * [Directory Structure](#directory-structure)
-    * [Development Instructions](#development-instructions)
     * [Statement](#statement)
 <!--te-->
 
@@ -192,19 +205,6 @@ end
 - **生命周期管理**：自动追踪和释放资源
 - **类型支持**：Sprite、AudioClip、GameObject、TextAsset等
 - **预加载机制**：支持场景资源预加载
-
-## Tech Stack
-
-| 技术 | 版本 | 说明 |
-|------|------|------|
-| Unity | 2022.3.36f1 | 游戏引擎 |
-| XLua | 最新版 | Lua脚本引擎 |
-| Spine | Runtime 3.x | 2D骨骼动画 |
-| DOTween | 1.2.790 | 动画补间库 |
-| UniTask | 2.5.10 | 异步任务框架 |
-| Newtonsoft.Json | 3.2.2 | JSON解析 |
-| Addressables | 1.x | 资源管理系统 |
-| TextMeshPro | 内置 | 高质量文本渲染 |
 
 ## Statement
 

@@ -5,24 +5,37 @@
 これは **Unity 2022.3.36f1** と **XLua** をベースに開発されたテキストアドベンチャーゲーム（ADV/AVG）フレームワークです  
 ロジックとビューの分離アーキテクチャを採用し、多言語ローカライゼーションと高い拡張性をサポートしています
 
+## Tech Stack
+
+| カテゴリ | テクノロジー | バージョン | 説明 |
+| :--- | :--- | :--- | :--- |
+| **ゲームエンジン** | Unity | 2022.3.36f1 | コアゲーム開発エンジン |
+| **スクリプト** | XLua | 最新版 | 高性能なLuaスクリプト統合フレームワーク |
+| **アニメーション** | Spine | Runtime 3.x | 2D骨格アニメーションランタイム |
+| **アニメーション** | DOTween | 1.2.790 | トゥイーンアニメーションライブラリ |
+| **非同期** | UniTask | 2.5.10 | Unity向け最適化非同期処理フレームワーク |
+| **データ** | Newtonsoft.Json | 3.2.2 | JSONシリアライズ/デシリアライズツール |
+| **アセット管理** | Addressables | 1.x | アセット管理およびロードシステム |
+| **UI/表示** | TextMeshPro | 内蔵 | 高品質なテキストレンダリングシステム |
+
+---
+
 <!--ts-->
 * [ADVLite](#advlite)
+    * [Tech Stack](#tech-stack)
     * [Getting Started](#getting-started)
     * [Control](#control)
     * [Architecture](#architecture)
         * [Lua Script Engine](#lua-script-engine)
         * [Logic and View Separation](#logic-and-view-separation)
         * [Addressables Resource Management](#addressables-resource-management)
-    * [Core System](#core-system)
+    * [Core Systems](#core-systems)
         * [ADV Management System](#adv-management-system)
         * [Localization System](#localization-system)
         * [Character System](#character-system)
         * [Audio System](#audio-system)
         * [UI System](#ui-system)
         * [Resource Management System](#resource-management-system)
-    * [Technological Stack](#technological-stack)
-    * [Directory Structure](#directory-structure)
-    * [Development Instructions](#development-instructions)
     * [Statement](#statement)
 <!--te-->
 
@@ -192,19 +205,6 @@ Addressables ベースの非同期リソース管理：
 - **ライフサイクル管理**：リソースの自動追跡と解放
 - **型サポート**：Sprite、AudioClip、GameObject、TextAsset など
 - **プリロード機構**：シーンリソースのプリロードをサポート
-
-## Tech Stack
-
-| 技術 | バージョン | 説明 |
-|------|------|------|
-| Unity | 2022.3.36f1 | ゲームエンジン |
-| XLua | 最新版 | Lua スクリプトエンジン |
-| Spine | Runtime 3.x | 2D スケルタルアニメーション |
-| DOTween | 1.2.790 | アニメーショントゥイーンライブラリ |
-| UniTask | 2.5.10 | 非同期タスクフレームワーク |
-| Newtonsoft.Json | 3.2.2 | JSON パース |
-| Addressables | 1.x | リソース管理システム |
-| TextMeshPro | 内蔵 | 高品質テキストレンダリング |
 
 ## Statement
 
