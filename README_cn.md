@@ -15,8 +15,8 @@
 | **动画辅助** | DOTween | 1.2.790 | 补间动画插件库 |
 | **异步框架** | UniTask | 2.5.10 | 为 Unity 定制的异步任务处理框架 |
 | **数据处理** | Newtonsoft.Json | 3.2.2 | JSON 序列化与反序列化工具 |
-| **资源管理** | Addressables | 1.x | 资源管理、加载与打包系统 |
-| **文本渲染** | TextMeshPro | 内置 | 高质量矢量文本渲染系统 |
+| **资源管理** | Addressables | 1.21.21 | 资源管理、加载与打包系统 |
+| **文本渲染** | TextMeshPro | 3.0.6（UPM 包） | 高质量矢量文本渲染系统 |
 
 ---
 
@@ -50,6 +50,9 @@
 | 操作      | 功能说明                     |
 | ----------| ------------------------ |
 | `鼠标左键`        | 推进对话                |
+| `Ctrl`        | 硬快进（不加 Shift）                |
+| `Ctrl + Shift`        | 软快进                |
+| `Tools → Language → Switch to XXX`（Editor 菜单）        | 切换语言，仅用于 Editor 下调试                |
 
 
 ## Architecture
@@ -58,11 +61,11 @@
 
 ### Lua Script Engine
 
-使用 **XLua** 作为脚本引擎，实现热更新和灵活的剧本编写：
+使用 **XLua** 作为脚本引擎，实现灵活的剧本编写：
 
 - **剧本文件**：所有游戏剧情使用 Lua 编写
 - **命令系统**：封装了丰富的 Lua 命令接口（对话、音效、动画等）
-- **热更新支持**：Lua 脚本可在不重新打包的情况下更新
+- **脚本外置**：Lua 脚本从 StreamingAssets 以文件形式加载执行，替换脚本无需重新编译打包（暂未实现远程分发等热更新机制）
 - **协程机制**：支持复杂的时序控制和异步操作
 
 **示例 Lua 脚本：**
@@ -83,11 +86,11 @@ end
 
 ### Logic and View Separation
 
-采用 **事件驱动** 的架构模式：
+采用 **逻辑与视图分层** 的架构模式：
 
 - **逻辑层（ADVManager）**：处理游戏核心逻辑和状态管理
 - **视图层（ADVUIController）**：负责UI显示和动画表现
-- **通信方式**：通过 Event 和 Callback 实现解耦
+- **通信方式**：逻辑层持有视图层引用，直接调用其公开方法驱动表现
 
 ---
 
@@ -96,8 +99,8 @@ end
 使用 Unity Addressables 系统进行资源的异步加载和内存管理：
 
 - **异步加载**：所有资源采用异步加载，避免卡顿
-- **动态释放**：自动管理资源生命周期，优化内存占用
-- **热更新支持**：支持远程资源更新
+- **引用计数管理**：通过引用计数追踪已加载资源，需显式调用释放接口（未释放的资源会记录日志提示）
+- **本地资源包**：当前资源组均配置为本地构建与加载，远程资源更新暂未启用
 
 ## Core Systems
 
@@ -111,7 +114,8 @@ end
 - **帧循环处理**：基于 UniTask 的高性能异步帧循环
 - **脚本执行**：通过 LuaScriptEngine 执行 Lua 剧本
 - **对话推进**：自动文本滚动显示和用户输入处理
-- **快进/自动模式**：支持跳过已读对话和自动播放
+
+![ADV Management](./README_Images/ADV.gif)
 
 ---
 
@@ -134,8 +138,10 @@ end
 | 文件类型     | 说明                     |
 | ----------| ------------------------ |
 | `ADVCharacterNames.tsv`       | 角色名称翻译              |
-| `ADVScenarios_ChapterXX.tsv`       | 剧情对话翻译（按章节）                |
+| `ADVScenarios_ChapterXX.tsv`       | 剧情对话翻译（按章节，仅日语/英语提供）                |
 | `ADVMetadata.tsv`       | 章节标题和摘要                |
+
+> 注：简体中文为基础语言，剧情对话原文直接写在 Lua 剧本中，不经过 TSV/JSON，因此简体中文没有 `ADVScenarios_ChapterXX.tsv` 文件。
 
 **Editor工具：**
 - `Tools → Localization → Build JSON from TSV` - 构建 JSON 文件
@@ -145,18 +151,17 @@ end
 - Lua 中的简体中文对话原文
 - JSON 存储日语和英语翻译
 - PlayerPrefs 持久化语言设置
-- 运行时动态切换语言
+
+![Language Switch](./README_Images/Language.png)
 
 ---
 
 ### Character System
 
-基于 **Spine** 的2D骨骼动画角色系统：
+基于 **Spine** 的2D骨骼动画角色系统（Spine 本身支持换装、换表情等 Skin 功能，本项目暂未实现）：
 
-- **角色换装**：支持角色服装、表情、配件的切换
-- **皮肤系统**：通过 Spine Skin 实现多套服装组合
-- **表情控制**：独立的表情动画层级
-- **动画混合**：流畅的动作过渡和混合
+- **表情控制**：独立的表情动画轨道（Track），可与身体动作分层驱动
+- **动画混合**：基于 Spine AnimationState 的动作过渡与混合
 
 ---
 
@@ -164,7 +169,7 @@ end
 
 完整的音频管理解决方案：
 
-- **BGM播放**：支持淡入淡出、循环播放
+- **BGM播放**：支持循环播放
 - **语音播放**：角色语音自动管理和停止
 - **音效播放**：支持多个音效同时播放
 - **音量控制**：独立的BGM、语音、音效音量设置
@@ -173,15 +178,16 @@ end
 **音频配置示例：**
 ```json
 {
-  "bgm": {
-    "Chapter01_BGM": "Audio/BGM/bgm_001"
-  },
-  "voice": {
-    "1000001": "Audio/Voice/Chapter01/v_001"
-  },
-  "se": {
-    "button_click": "Audio/SE/ui_click"
-  }
+  "chapters": [
+    {
+      "chapterName": "Chapter01",
+      "audioData": {
+        "bgm": ["BGM/bgm_chapter01.mp3"],
+        "voice": ["Voice/voice_1000001.mp3", "Voice/voice_1000002.mp3"],
+        "sound": ["SE/se_car.mp3"]
+      }
+    }
+  ]
 }
 ```
 
@@ -202,9 +208,9 @@ end
 基于 Addressables 的异步资源管理：
 
 - **异步加载**：使用 UniTask 进行高性能异步加载
-- **生命周期管理**：自动追踪和释放资源
-- **类型支持**：Sprite、AudioClip、GameObject、TextAsset等
-- **预加载机制**：支持场景资源预加载
+- **生命周期管理**：基于引用计数追踪已加载资源，需显式调用释放接口
+- **类型支持**：Sprite、AudioClip、GameObject、SkeletonDataAsset 等（本地化文本等仍通过 `Resources.Load` 单独加载，未接入 Addressables）
+- **预加载机制**：音频按章节批量预加载，其余资源（Sprite/GameObject/Spine 等）由 Lua 逐个触发预加载
 
 ## Statement
 

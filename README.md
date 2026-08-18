@@ -15,8 +15,8 @@ Features logic-view separation architecture with multi-language localization sup
 | **Tweening** | DOTween | 1.2.790 | Tween animation library |
 | **Async Framework** | UniTask | 2.5.10 | Efficient async/await integration for Unity |
 | **Data** | Newtonsoft.Json | 3.2.2 | JSON serialization and deserialization |
-| **Assets** | Addressables | 1.x | Asset management and loading system |
-| **Graphics/UI** | TextMeshPro | Built-in | Advanced text rendering and typography |
+| **Assets** | Addressables | 1.21.21 | Asset management and loading system |
+| **Graphics/UI** | TextMeshPro | 3.0.6 (UPM package) | Advanced text rendering and typography |
 
 ---
 
@@ -50,6 +50,9 @@ Features logic-view separation architecture with multi-language localization sup
 | Operation      | Description                     |
 | ----------| ------------------------ |
 | `Left Mouse Button`        | Advance dialogue                |
+| `Ctrl`        | Hard skip (without Shift)                |
+| `Ctrl + Shift`        | Soft skip                |
+| `Tools → Language → Switch to XXX` (Editor menu)        | Switch language, for Editor debugging only                |
 
 
 ## Architecture
@@ -58,11 +61,11 @@ This project adopts a modern **logic-view separation** architecture to ensure co
 
 ### Lua Script Engine
 
-Uses **XLua** as the scripting engine for hot updates and flexible story writing:
+Uses **XLua** as the scripting engine for flexible story writing:
 
 - **Script Files**: All game stories are written in Lua
 - **Command System**: Rich Lua command interfaces for dialogue, sound effects, animations, etc.
-- **Hot Update Support**: Lua scripts can be updated without repackaging
+- **Externalized Scripts**: Lua scripts are loaded as files from StreamingAssets and executed at runtime, so they can be replaced without recompiling or repackaging (no remote-distribution hot-update mechanism is implemented yet)
 - **Coroutine Mechanism**: Supports complex timing control and asynchronous operations
 
 **Example Lua Script:**
@@ -83,11 +86,11 @@ end
 
 ### Logic and View Separation
 
-Adopts an **event-driven** architecture pattern:
+Adopts a **layered logic/view** architecture pattern:
 
 - **Logic Layer (ADVManager)**: Handles core game logic and state management
 - **View Layer (ADVUIController)**: Responsible for UI display and animation
-- **Communication**: Decoupled through Events and Callbacks
+- **Communication**: The logic layer holds a direct reference to the view layer and calls its public methods
 
 ---
 
@@ -96,8 +99,8 @@ Adopts an **event-driven** architecture pattern:
 Uses Unity Addressables system for asynchronous resource loading and memory management:
 
 - **Async Loading**: All resources use async loading to avoid stuttering
-- **Dynamic Release**: Automatically manages resource lifecycle to optimize memory
-- **Hot Update Support**: Supports remote resource updates
+- **Reference-Counted Tracking**: Loaded resources are tracked by reference count and must be explicitly released (unreleased resources are logged)
+- **Local Asset Bundles**: All groups are currently configured for local build/load; remote resource updates are not yet enabled
 
 ## Core Systems
 
@@ -111,7 +114,8 @@ Responsible for overall game flow control and state management:
 - **Frame Loop**: High-performance async frame loop based on UniTask
 - **Script Execution**: Execute Lua scripts through LuaScriptEngine
 - **Dialogue Advancement**: Auto text scrolling and user input handling
-- **Fast Forward/Auto Mode**: Skip read dialogue and auto-play support
+
+![ADV Management](./README_Images/ADV.gif)
 
 ---
 
@@ -134,8 +138,10 @@ Professional translation architecture:
 | File Type     | Description                     |
 | ----------| ------------------------ |
 | `ADVCharacterNames.tsv`       | Character name translations              |
-| `ADVScenarios_ChapterXX.tsv`       | Dialogue translations (by chapter)                |
+| `ADVScenarios_ChapterXX.tsv`       | Dialogue translations (by chapter, Japanese/English only)                |
 | `ADVMetadata.tsv`       | Chapter titles and summaries                |
+
+> Note: Simplified Chinese is the base language; dialogue source text is written directly in Lua scripts and does not go through TSV/JSON, so there is no `ADVScenarios_ChapterXX.tsv` for zh-CN.
 
 **Editor Tools:**
 - `Tools → Localization → Build JSON from TSV` - Build JSON files
@@ -145,18 +151,17 @@ Professional translation architecture:
 - Simplified Chinese dialogue source text in Lua
 - JSON storage for Japanese and English translations
 - PlayerPrefs persistent language settings
-- Runtime dynamic language switching
+
+![Language Switch](./README_Images/Language.png)
 
 ---
 
 ### Character System
 
-2D skeletal animation character system based on **Spine**:
+2D skeletal animation character system based on **Spine** (Spine itself supports outfit/expression switching via its Skin system, but this project does not implement it yet):
 
-- **Character Dressing**: Support for costume, expression, and accessory switching
-- **Skin System**: Multiple costume combinations via Spine Skin
-- **Expression Control**: Independent expression animation layers
-- **Animation Blending**: Smooth action transitions and blending
+- **Expression Control**: Independent expression animation track, driven separately from body motion
+- **Animation Blending**: Smooth transitions and blending based on Spine's AnimationState
 
 ---
 
@@ -164,7 +169,7 @@ Professional translation architecture:
 
 Complete audio management solution:
 
-- **BGM Playback**: Fade in/out and loop playback support
+- **BGM Playback**: Loop playback support
 - **Voice Playback**: Auto character voice management and stopping
 - **Sound Effects**: Multiple sound effects playback support
 - **Volume Control**: Independent BGM, voice, and sound effect volume
@@ -173,15 +178,16 @@ Complete audio management solution:
 **Audio Configuration Example:**
 ```json
 {
-  "bgm": {
-    "Chapter01_BGM": "Audio/BGM/bgm_001"
-  },
-  "voice": {
-    "1000001": "Audio/Voice/Chapter01/v_001"
-  },
-  "se": {
-    "button_click": "Audio/SE/ui_click"
-  }
+  "chapters": [
+    {
+      "chapterName": "Chapter01",
+      "audioData": {
+        "bgm": ["BGM/bgm_chapter01.mp3"],
+        "voice": ["Voice/voice_1000001.mp3", "Voice/voice_1000002.mp3"],
+        "sound": ["SE/se_car.mp3"]
+      }
+    }
+  ]
 }
 ```
 
@@ -202,9 +208,9 @@ Responsive UI control system:
 Async resource management based on Addressables:
 
 - **Async Loading**: High-performance async loading using UniTask
-- **Lifecycle Management**: Auto tracking and resource release
-- **Type Support**: Sprite, AudioClip, GameObject, TextAsset, etc.
-- **Preload Mechanism**: Scene resource preloading support
+- **Lifecycle Management**: Reference-counted tracking of loaded resources; requires explicit release calls
+- **Type Support**: Sprite, AudioClip, GameObject, SkeletonDataAsset, etc. (localization text and similar are still loaded via `Resources.Load` and are not routed through Addressables)
+- **Preload Mechanism**: Audio is preloaded in batches per chapter; other resources (Sprite/GameObject/Spine, etc.) are preloaded individually from Lua
 
 ## Statement
 
